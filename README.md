@@ -52,7 +52,7 @@ Section: Additional Information
 ## Installation
 
 ```
-bench get-app https://github.com/the-bantoo/expense_request.git
+bench get-app https://github.com/CloudMastersolutions/expense_request.git
 bench --site site-name install-app expense_request
 ```
 
