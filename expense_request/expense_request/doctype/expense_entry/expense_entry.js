@@ -3,14 +3,14 @@
 
 frappe.provide("expense_entry.expense_entry");
 
-function update_totals(frm, cdt, cdn){
-	var items = locals[cdt][cdn];
+function update_totals(frm, cdt, cdn) {
+    var items = locals[cdt][cdn];
     var total = 0;
     var quantity = 0;
     frm.doc.expenses.forEach(
-        function(items) { 
+        function (items) {
             total += items.amount;
-            quantity +=1;
+            quantity += 1;
         });
     frm.set_value("total", total);
     refresh_field("total");
@@ -19,63 +19,63 @@ function update_totals(frm, cdt, cdn){
 }
 
 frappe.ui.form.on('Expense Entry Item', {
-	amount: function(frm, cdt, cdn) {
+    amount: function (frm, cdt, cdn) {
         update_totals(frm, cdt, cdn);
-	},
-	expenses_remove: function(frm, cdt, cdn){
+    },
+    expenses_remove: function (frm, cdt, cdn) {
         update_totals(frm, cdt, cdn);
-	},
-    expenses_add: function(frm, cdt, cdn){
+    },
+    expenses_add: function (frm, cdt, cdn) {
         var d = locals[cdt][cdn];
-        
-        if((d.cost_center === "" || typeof d.cost_center == 'undefined')) { 
+
+        if ((d.cost_center === "" || typeof d.cost_center == 'undefined')) {
 
             if (cur_frm.doc.default_cost_center != "" || typeof cur_frm.doc.default_cost_center != 'undefined') {
-                
-                d.cost_center = cur_frm.doc.default_cost_center; 
+
+                d.cost_center = cur_frm.doc.default_cost_center;
                 cur_frm.refresh_field("expenses");
             }
         }
-	}
-	
+    }
+
 });
 
 
 frappe.ui.form.on('Expense Entry', {
-    before_save: function(frm) { 
+    before_save: function (frm) {
 
-        $.each(frm.doc.expenses, function(i, d) { 
+        $.each(frm.doc.expenses, function (i, d) {
             let label = "";
-            
-            if((d.cost_center === "" || typeof d.cost_center == 'undefined')) { 
-                
+
+            if ((d.cost_center === "" || typeof d.cost_center == 'undefined')) {
+
                 if (cur_frm.doc.default_cost_center === "" || typeof cur_frm.doc.default_cost_center == 'undefined') {
                     frappe.validated = false;
-                    frappe.msgprint("Set a Default Cost Center or specify the Cost Center for expense <strong>No. " 
-                                    + (i + 1) + "</strong>.");
+                    frappe.msgprint("Set a Default Cost Center or specify the Cost Center for expense <strong>No. "
+                        + (i + 1) + "</strong>.");
                     return false;
                 }
                 else {
-                    d.cost_center = cur_frm.doc.default_cost_center; 
+                    d.cost_center = cur_frm.doc.default_cost_center;
                 }
             }
-        }); 
-        
+        });
+
     },
     refresh(frm) {
         //update total and qty when an item is added
-	},
-	onload(frm) {
-        set_queries(frm);
-	},
-	company(frm) {
-        set_queries(frm);
-        unset_default_cost_center(frm);
-	}
+    },
+    onload(frm) {
+        refresh_fields_on_company_change(frm);
+    },
+    company(frm) {
+        refresh_fields_on_company_change(frm);
+    }
 });
 
 
-function set_queries(frm) {
+function refresh_fields_on_company_change(frm) {
+    frm.set_value("expenses", []);
     frm.set_query("expense_account", 'expenses', () => {
         return {
             filters: [
@@ -93,6 +93,29 @@ function set_queries(frm) {
             ]
         }
     });
+    frm.set_value("custom_department", '');
+    frm.set_query("custom_department", () => {
+        return {
+            filters: { company: frm.doc.company }
+        }
+    });
+    frm.set_value("mode_of_payment", '');
+    frm.set_query("mode_of_payment", () => {
+        return {
+            filters: [
+                ["Mode of Payment Account", "company", "=", frm.doc.company]
+            ]
+        }
+    });
+    frm.set_value("default_project", '');
+    frm.set_query("default_project", () => {
+        return {
+            filters: {
+                company: frm.doc.company
+            }
+        }
+    });
+    frm.set_value("default_cost_center", '');
     frm.set_query("default_cost_center", () => {
         return {
             filters: [
@@ -103,6 +126,3 @@ function set_queries(frm) {
     });
 }
 
-function unset_default_cost_center(frm) {
-    frm.set_value("default_cost_center", '');
-}   
