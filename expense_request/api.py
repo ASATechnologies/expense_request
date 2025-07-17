@@ -108,7 +108,7 @@ def initialise_journal_entry(expense_entry_name):
 
 def make_journal_entry(expense_entry):
 
-    if expense_entry.status == "Approved":         
+    if expense_entry.status == "Approved" or expense_entry.docstatus == 1:         
 
         # check for duplicates
         
@@ -187,3 +187,5 @@ def make_journal_entry(expense_entry):
 
         je.insert()
         je.submit()
+        if expense_entry.docstatus == 0:
+            expense_entry.submit()

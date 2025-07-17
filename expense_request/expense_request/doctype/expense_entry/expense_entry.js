@@ -93,12 +93,12 @@ function refresh_fields_on_company_change(frm) {
             ]
         }
     });
-    frm.set_value("custom_department", '');
-    frm.set_query("custom_department", () => {
-        return {
-            filters: { company: frm.doc.company }
-        }
-    });
+    // frm.set_value("custom_department", '');
+    // frm.set_query("custom_department", () => {
+    //     return {
+    //         filters: { company: frm.doc.company }
+    //     }
+    // });
     frm.set_value("mode_of_payment", '');
     frm.set_query("mode_of_payment", () => {
         return {
