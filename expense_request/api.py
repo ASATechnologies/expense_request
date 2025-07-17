@@ -70,122 +70,134 @@ def setup(expense_entry, method):
     # add expenses up and set the total field
     # add default project and cost center to expense items
 
-    total = 0
-    count = 0
-    expense_items = []
+    # total = 0
+    # count = 0
+    # expense_items = []
 
-    
-    for detail in expense_entry.expenses:
-        total += float(detail.amount)        
-        count += 1
-        
-        if not detail.project and expense_entry.default_project:
-            detail.project = expense_entry.default_project
-        
-        if not detail.cost_center and expense_entry.default_cost_center:
-            detail.cost_center = expense_entry.default_cost_center
+    # for detail in expense_entry.expenses:
+    #     total += float(detail.amount)
+    #     count += 1
 
-        expense_items.append(detail)
+    #     if not detail.project and expense_entry.default_project:
+    #         detail.project = expense_entry.default_project
 
-    expense_entry.expenses = expense_items
+    #     if not detail.cost_center and expense_entry.default_cost_center:
+    #         detail.cost_center = expense_entry.default_cost_center
 
-    expense_entry.total = total
-    expense_entry.quantity = count
+    #     expense_items.append(detail)
+
+    # expense_entry.expenses = expense_items
+
+    # expense_entry.total = total
+    # expense_entry.quantity = count
 
     make_journal_entry(expense_entry)
-
-    
 
 
 @frappe.whitelist()
 def initialise_journal_entry(expense_entry_name):
     # make JE from javascript form Make JE button
 
-    make_journal_entry(
-        frappe.get_doc('Expense Entry', expense_entry_name)
-    )
+    make_journal_entry(frappe.get_doc("Expense Entry", expense_entry_name))
 
 
 def make_journal_entry(expense_entry):
 
-    if expense_entry.status == "Approved" or expense_entry.docstatus == 1:         
+    if expense_entry.docstatus == 1:
+        return
+
+    if expense_entry.status == "Approved":
 
         # check for duplicates
-        
-        if frappe.db.exists({'doctype': 'Journal Entry', 'bill_no': expense_entry.name}):
+        is_already_created = frappe.db.exists(
+            "Journal Entry",
+            {
+                "bill_no": expense_entry.name,
+                "docstatus": 1,
+            },
+        )
+        if is_already_created and expense_entry.docstatus == 0:
             frappe.throw(
                 title="Error",
-                msg="Journal Entry {} already exists.".format(expense_entry.name)
+                msg="Journal Entry {} already exists.".format(expense_entry.name),
             )
-
 
         # Preparing the JE: convert expense_entry details into je account details
 
         accounts = []
 
-        for detail in expense_entry.expenses:            
+        for detail in expense_entry.expenses:
 
-            accounts.append({  
-                'debit_in_account_currency': float(detail.amount),
-                'user_remark': str(detail.description),
-                'account': detail.expense_account,
-                'project': detail.project,
-                'cost_center': detail.cost_center
-            })
+            accounts.append(
+                {
+                    "debit_in_account_currency": float(detail.amount),
+                    "user_remark": str(detail.description),
+                    "account": detail.expense_account,
+                    "project": detail.project,
+                    "cost_center": detail.cost_center,
+                }
+            )
 
         # finally add the payment account detail
 
         pay_account = ""
 
-        if (expense_entry.mode_of_payment != "Cash" and (not 
-            expense_entry.payment_reference or not expense_entry.clearance_date)):
+        if expense_entry.mode_of_payment != "Cash" and (
+            not expense_entry.payment_reference or not expense_entry.clearance_date
+        ):
             frappe.throw(
                 title="Enter Payment Reference",
-                msg="Payment Reference and Date are Required for all non-cash payments."
+                msg="Payment Reference and Date are Required for all non-cash payments.",
             )
         else:
             expense_entry.clearance_date = ""
             expense_entry.payment_reference = ""
 
-
-        pay_account = frappe.db.get_value('Mode of Payment Account', {'parent' : expense_entry.mode_of_payment, 'company' : expense_entry.company}, 'default_account')
+        pay_account = frappe.db.get_value(
+            "Mode of Payment Account",
+            {"parent": expense_entry.mode_of_payment, "company": expense_entry.company},
+            "default_account",
+        )
         if not pay_account or pay_account == "":
             frappe.throw(
-                title="Error",
-                msg="The selected Mode of Payment has no linked account."
+                title="Error", msg="The selected Mode of Payment has no linked account."
             )
 
-        accounts.append({  
-            'credit_in_account_currency': float(expense_entry.total),
-            'user_remark': str(detail.description),
-            'account': pay_account,
-            'cost_center': expense_entry.default_cost_center
-        })
+        accounts.append(
+            {
+                "credit_in_account_currency": float(expense_entry.total),
+                "user_remark": str(detail.description),
+                "account": pay_account,
+                "cost_center": expense_entry.default_cost_center,
+            }
+        )
 
         # create the journal entry
-        je = frappe.get_doc({
-            'title': expense_entry.name,
-            'doctype': 'Journal Entry',
-            'voucher_type': 'Journal Entry',
-            'posting_date': expense_entry.posting_date,
-            'company': expense_entry.company,
-            'accounts': accounts,
-            'user_remark': expense_entry.remarks,
-            'mode_of_payment': expense_entry.mode_of_payment,
-            'cheque_date': expense_entry.clearance_date,
-            'reference_date': expense_entry.clearance_date,
-            'cheque_no': expense_entry.payment_reference,
-            'pay_to_recd_from': expense_entry.payment_to,
-            'bill_no': expense_entry.name
-        })
+        je = frappe.get_doc(
+            {
+                "title": expense_entry.name,
+                "doctype": "Journal Entry",
+                "voucher_type": "Journal Entry",
+                "posting_date": expense_entry.posting_date,
+                "company": expense_entry.company,
+                "accounts": accounts,
+                "user_remark": expense_entry.remarks,
+                "mode_of_payment": expense_entry.mode_of_payment,
+                "cheque_date": expense_entry.clearance_date,
+                "reference_date": expense_entry.clearance_date,
+                "cheque_no": expense_entry.payment_reference,
+                "pay_to_recd_from": expense_entry.payment_to,
+                "bill_no": expense_entry.name,
+            }
+        )
 
         user = frappe.get_doc("User", frappe.session.user)
 
-        full_name = str(user.first_name) + ' ' + str(user.last_name)
-        expense_entry.db_set('approved_by', full_name)
-        
+        full_name = str(user.first_name) + " " + str(user.last_name)
+        expense_entry.db_set("approved_by", full_name)
 
         je.insert()
         je.submit()
+        frappe.db.commit()
         if expense_entry.docstatus == 0:
             expense_entry.submit()
