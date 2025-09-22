@@ -39,7 +39,7 @@ app_license = "MIT"
 
 # website user home page (by Role)
 # role_home_page = {
-#	"Role": "home_page"
+# 	"Role": "home_page"
 # }
 
 # Website user home page (by function)
@@ -80,9 +80,12 @@ app_license = "MIT"
 # Hook on document methods and events
 
 doc_events = {
-	"Expense Entry": {
-		"on_update": "expense_request.api.setup"
-	}
+    "Expense Entry": {"on_update": "expense_request.api.setup"},
+    "Accounting Dimension": {
+        "after_insert": "expense_request.accounting_dimensions_handler.on_dimension_change",
+        "on_update": "expense_request.accounting_dimensions_handler.on_dimension_change",
+        "on_trash": "expense_request.accounting_dimensions_handler.on_dimension_delete",
+    },
 }
 
 # Scheduled Tasks
@@ -126,51 +129,41 @@ doc_events = {
 # }
 
 
-fixtures = ["Workflow", "Workflow State", "Workflow Action Master",
-	{
-		"dt": "Print Format",
-		"filters": [
-			[
-				"name", "in", [
-					"Expense Entry"
-				]
-			]
-		]
-
-	},
-	{
-		"dt": "Custom Field",
-		"filters": [
-			[
-				"name", "in", [
-					"Accounts Settings-expense_settings",
-					"Accounts Settings-default_mode_of_payment",
-					"Accounts Settings-column_break_16",
-					"Accounts Settings-notify_all_approvers",
-					"Accounts Settings-create_journals_entries_automatically"
-				]
-			]
-		]
-	},
-	{
-		"dt": "Notification",
-			"filters": [
-[
-                                        "name", "in", [
-                                                "Expense Entry",
-                                        ]
-                                ]
-			]
-	},
-	{
-		"dt": "Report",
-			"filters": [
-				[
-					"ref_doctype", "in", [
-						"Expense Entry",
-						"Journal Entry"
-					]
-				]
-			]
-	}
+fixtures = [
+    "Workflow",
+    "Workflow State",
+    "Workflow Action Master",
+    {"dt": "Print Format", "filters": [["name", "in", ["Expense Entry"]]]},
+    {
+        "dt": "Custom Field",
+        "filters": [
+            [
+                "name",
+                "in",
+                [
+                    "Accounts Settings-expense_settings",
+                    "Accounts Settings-default_mode_of_payment",
+                    "Accounts Settings-column_break_16",
+                    "Accounts Settings-notify_all_approvers",
+                    "Accounts Settings-create_journals_entries_automatically",
+                ],
+            ]
+        ],
+    },
+    {
+        "dt": "Notification",
+        "filters": [
+            [
+                "name",
+                "in",
+                [
+                    "Expense Entry",
+                ],
+            ]
+        ],
+    },
+    {
+        "dt": "Report",
+        "filters": [["ref_doctype", "in", ["Expense Entry", "Journal Entry"]]],
+    },
 ]

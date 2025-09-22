@@ -19,6 +19,7 @@ Doctype Fields - EXP-.YEAR.-#####
 Accounting Dimensions:
 - Default Cost Center (Link)
 - Default Project (Link)
+- Custom dimensions
 
 Section and Table: Expense Details
 - Expense Account - (Required: Link - Filtered by Expenses)
@@ -52,7 +53,7 @@ Section: Additional Information
 ## Installation
 
 ```
-bench get-app https://github.com/CloudMastersolutions/expense_request.git
+bench get-app https://github.com/ASATechnologies/expense_request.git
 bench --site site-name install-app expense_request
 ```
 
@@ -69,7 +70,7 @@ Later
 - [ ] Separate Request Document
 - [ ] Rename App. Expense Voucher vs Expense Entry
 - [ ] Request addition into ERPNext Core
-- [ ] Wrtie tests
+- [ ] Write tests
 
 
 #### License
