@@ -1,4 +1,4 @@
 [pre_model_sync]
 
 [post_model_sync]
-expense_request.patches.v1_0.add_accounting_dimensions
+expense_request.expense_request.patches.v1_0.add_accounting_dimensions
