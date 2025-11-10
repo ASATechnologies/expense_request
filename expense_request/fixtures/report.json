@@ -1,8 +1,8 @@
 [
  {
   "add_total_row": 1,
+  "add_translate_data": 0,
   "columns": [],
-  "disable_prepared_report": 0,
   "disabled": 0,
   "docstatus": 0,
   "doctype": "Report",
@@ -14,9 +14,6 @@
   "modified": "2020-10-25 22:58:17.459778",
   "module": "Expense Request",
   "name": "Expenses Register",
-  "parent": null,
-  "parentfield": null,
-  "parenttype": null,
   "prepared_report": 0,
   "query": null,
   "ref_doctype": "Expense Entry",
@@ -26,23 +23,18 @@
   "report_type": "Report Builder",
   "roles": [
    {
-    "parent": "Expenses Register",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Expense Approver"
    },
    {
-    "parent": "Expenses Register",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Accounts User"
    }
-  ]
+  ],
+  "timeout": 0
  },
  {
   "add_total_row": 0,
+  "add_translate_data": 0,
   "columns": [],
-  "disable_prepared_report": 0,
   "disabled": 0,
   "docstatus": 0,
   "doctype": "Report",
@@ -54,9 +46,6 @@
   "modified": "2017-02-24 20:19:19.231541",
   "module": "Accounts",
   "name": "Bank Reconciliation Statement",
-  "parent": null,
-  "parentfield": null,
-  "parenttype": null,
   "prepared_report": 0,
   "query": null,
   "ref_doctype": "Journal Entry",
@@ -66,29 +55,21 @@
   "report_type": "Script Report",
   "roles": [
    {
-    "parent": "Bank Reconciliation Statement",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Accounts User"
    },
    {
-    "parent": "Bank Reconciliation Statement",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Accounts Manager"
    },
    {
-    "parent": "Bank Reconciliation Statement",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Auditor"
    }
-  ]
+  ],
+  "timeout": 0
  },
  {
   "add_total_row": 0,
+  "add_translate_data": 0,
   "columns": [],
-  "disable_prepared_report": 0,
   "disabled": 0,
   "docstatus": 0,
   "doctype": "Report",
@@ -100,9 +81,6 @@
   "modified": "2017-02-24 20:19:26.257552",
   "module": "Accounts",
   "name": "Bank Clearance Summary",
-  "parent": null,
-  "parentfield": null,
-  "parenttype": null,
   "prepared_report": 0,
   "query": null,
   "ref_doctype": "Journal Entry",
@@ -112,29 +90,21 @@
   "report_type": "Script Report",
   "roles": [
    {
-    "parent": "Bank Clearance Summary",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Accounts User"
    },
    {
-    "parent": "Bank Clearance Summary",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Accounts Manager"
    },
    {
-    "parent": "Bank Clearance Summary",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Auditor"
    }
-  ]
+  ],
+  "timeout": 0
  },
  {
   "add_total_row": 1,
+  "add_translate_data": 0,
   "columns": [],
-  "disable_prepared_report": 0,
   "disabled": 0,
   "docstatus": 0,
   "doctype": "Report",
@@ -146,9 +116,6 @@
   "modified": "2017-02-24 20:16:43.005325",
   "module": "Accounts",
   "name": "Payment Period Based On Invoice Date",
-  "parent": null,
-  "parentfield": null,
-  "parenttype": null,
   "prepared_report": 0,
   "query": null,
   "ref_doctype": "Journal Entry",
@@ -158,23 +125,15 @@
   "report_type": "Script Report",
   "roles": [
    {
-    "parent": "Payment Period Based On Invoice Date",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Accounts User"
    },
    {
-    "parent": "Payment Period Based On Invoice Date",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Accounts Manager"
    },
    {
-    "parent": "Payment Period Based On Invoice Date",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Auditor"
    }
-  ]
+  ],
+  "timeout": 0
  }
 ]

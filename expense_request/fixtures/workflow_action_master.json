@@ -2,21 +2,8 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2020-10-11 00:53:35.995881",
-  "name": "Approve",
-  "parent": null,
-  "parentfield": null,
-  "parenttype": null,
-  "workflow_action_name": "Approve"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2020-10-11 00:53:35.998733",
   "name": "Reject",
-  "parent": null,
-  "parentfield": null,
-  "parenttype": null,
   "workflow_action_name": "Reject"
  },
  {
@@ -24,9 +11,13 @@
   "doctype": "Workflow Action Master",
   "modified": "2020-10-11 00:53:36.001157",
   "name": "Review",
-  "parent": null,
-  "parentfield": null,
-  "parenttype": null,
   "workflow_action_name": "Review"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2020-10-11 00:53:35.995881",
+  "name": "Approve",
+  "workflow_action_name": "Approve"
  }
 ]
