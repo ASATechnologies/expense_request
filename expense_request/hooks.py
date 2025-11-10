@@ -54,8 +54,11 @@ app_license = "MIT"
 # Installation
 # ------------
 
-# before_install = "expenses.install.before_install"
-# after_install = "expenses.install.after_install"
+# before_install = "expense_request.install.before_install"
+after_install = "expense_request.install.after_install"
+
+after_migrate = "expense_request.install.after_install"
+
 
 # Desk Notifications
 # ------------------

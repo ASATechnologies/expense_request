@@ -1,12 +1,22 @@
-# patches/v1_0/add_dynamic_accounting_dimensions.py
-# Migration script to add accounting dimension fields dynamically
+# -*- coding: utf-8 -*-
+# Copyright (c) 2025, Bantoo and contributors
+# For license information, please see license.txt
 
+from __future__ import unicode_literals
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_field
 
 
-def execute():
-    """Execute the migration to add dynamic accounting dimension fields"""
+def after_install():
+    """
+    Runs after app installation and migration.
+    Syncs accounting dimension fields dynamically.
+    """
+    sync_accounting_dimensions()
+
+
+def sync_accounting_dimensions():
+    """Dynamically add accounting dimension fields to Expense Entry doctypes"""
 
     # Get all active accounting dimensions
     accounting_dimensions = frappe.get_all(
@@ -99,5 +109,5 @@ def execute():
 
     frappe.db.commit()
     print(
-        f"Migration completed. Added fields for {len(accounting_dimensions)} accounting dimensions."
+        f"Synced {len(accounting_dimensions)} accounting dimensions to Expense Entry."
     )
