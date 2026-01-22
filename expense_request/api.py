@@ -1,6 +1,5 @@
 import frappe
-from frappe import _
-from frappe import utils
+from frappe import _, utils
 
 
 def get_accounting_dimensions():
@@ -11,30 +10,6 @@ def get_accounting_dimensions():
         fields=["name", "fieldname", "label", "document_type"],
     )
 
-
-def get_accounting_dimension_filters(dimension_doc, company):
-    """Get filters for accounting dimension based on its document type"""
-    filters = []
-
-    if dimension_doc.document_type == "Cost Center":
-        filters = [
-            ["Cost Center", "is_group", "=", "0"],
-            ["Cost Center", "company", "=", company],
-        ]
-    elif dimension_doc.document_type == "Project":
-        filters = [
-            ["Project", "status", "!=", "Cancelled"],
-            ["Project", "company", "=", company],
-        ]
-    else:
-        # Generic filters for other document types
-        filters = [[dimension_doc.document_type, "disabled", "!=", 1]]
-
-        # Add company filter if the document type has a company field
-        if frappe.db.has_column(dimension_doc.document_type, "company"):
-            filters.append([dimension_doc.document_type, "company", "=", company])
-
-    return filters
 
 
 def setup(expense_entry, method):
@@ -205,9 +180,3 @@ def get_accounting_dimensions_for_client():
     """API endpoint to get accounting dimensions for client-side JavaScript"""
     return get_accounting_dimensions()
 
-
-@frappe.whitelist()
-def get_dimension_filters(dimension_name, company):
-    """API endpoint to get filters for a specific accounting dimension"""
-    dimension_doc = frappe.get_doc("Accounting Dimension", dimension_name)
-    return get_accounting_dimension_filters(dimension_doc, company)

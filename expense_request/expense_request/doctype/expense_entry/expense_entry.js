@@ -2,6 +2,8 @@
 // For license information, please see license.txt
 
 frappe.provide("expense_entry.expense_entry");
+const default_dimensions = [{fieldname: "cost_center", document_type: "Cost Center", mandatory_for_pl: true, label: "Cost Center"},
+{fieldname: "project", document_type :  "Project", label: "Project"}];
 
 let accounting_dimensions = [];
 
@@ -25,17 +27,19 @@ function update_totals(frm) {
 
 // ---- load dimensions from server (robust) ----
 function load_accounting_dimensions(frm) {
-    // avoid duplicate parallel loads
+
+	// avoid duplicate parallel loads
     if (frm._loading_accounting_dimensions) return;
     frm._loading_accounting_dimensions = true;
 
     // if no company set yet, clear and return
     if (!frm.doc.company) {
-        accounting_dimensions = [];
+		accounting_dimensions = [];
         setup_dimension_queries(frm);
         frm._loading_accounting_dimensions = false;
         return;
     }
+
 
     frappe.call({
         method: "expense_request.api.get_accounting_dimensions_for_client",
@@ -45,10 +49,10 @@ function load_accounting_dimensions(frm) {
         callback: function(r) {
             frm._loading_accounting_dimensions = false;
             if (r && !r.exc && r.message) {
-                accounting_dimensions = r.message || [];
+				accounting_dimensions = [...default_dimensions, ...r.message] || default_dimensions;
                 setup_dimension_queries(frm);
             } else {
-                accounting_dimensions = [];
+                accounting_dimensions = default_dimensions;
                 console.error("Could not load accounting dimensions", r && r.exc ? r.exc : r);
                 frappe.msgprint({
                     title: __("Error"),
@@ -60,7 +64,7 @@ function load_accounting_dimensions(frm) {
         }
     }).catch(function(err) {
         frm._loading_accounting_dimensions = false;
-        accounting_dimensions = [];
+        accounting_dimensions = default_dimensions;
         console.error("Error fetching accounting dimensions:", err);
         frappe.msgprint({
             title: __("Error"),
@@ -74,11 +78,10 @@ function load_accounting_dimensions(frm) {
 // ---- set queries based on loaded dimensions ----
 function setup_dimension_queries(frm) {
     // if no dimensions, we still set no-op queries to avoid past problems
-    if (!Array.isArray(accounting_dimensions)) accounting_dimensions = [];
+    if (!Array.isArray(accounting_dimensions)) accounting_dimensions = default_dimensions;
 
-    accounting_dimensions.forEach(function(dimension) {
+	accounting_dimensions.forEach(function(dimension) {
         if (!dimension.fieldname) return;
-
         // child table query: field in rows of 'expenses' table
         frm.set_query(dimension.fieldname, 'expenses', function(doc, cdt, cdn) {
             return get_dimension_query_filters(dimension, doc.company || frm.doc.company);
@@ -100,7 +103,7 @@ function get_dimension_query_filters(dimension, company) {
     if (dimension.document_type === "Cost Center") {
         return {
             filters: [
-                ["Cost Center", "is_group", "=", "0"],
+                ["Cost Center", "is_group", "=", 0],
                 ["Cost Center", "company", "=", company]
             ]
         };
@@ -175,7 +178,14 @@ function clear_default_dimensions(frm) {
     accounting_dimensions.forEach(function(dimension) {
         let default_fieldname = `default_${dimension.fieldname}`;
         frm.set_value(default_fieldname, '');
+		if (frm.doc.expenses) {
+			frm.doc.expenses.forEach(row => {
+				// frappe.model.set_value(doctype, name, fieldname, value)
+				frappe.model.set_value(row.doctype, row.name, dimension.fieldname, '');
+			});
+		}
     });
+	frm.refresh_field('expenses')
 }
 
 // ---- event handlers ----
@@ -196,7 +206,7 @@ frappe.ui.form.on('Expense Entry Item', {
 });
 
 frappe.ui.form.on('Expense Entry', {
-    before_save: function(frm) {
+    validate: function(frm) {
         if (!validate_mandatory_dimensions(frm)) {
             frappe.validated = false;
             return false;
@@ -223,7 +233,7 @@ frappe.ui.form.on('Expense Entry', {
             load_accounting_dimensions(frm);
             set_queries(frm);
         } else {
-            accounting_dimensions = [];
+            accounting_dimensions = default_dimensions;
             setup_dimension_queries(frm);
         }
         clear_default_dimensions(frm);
