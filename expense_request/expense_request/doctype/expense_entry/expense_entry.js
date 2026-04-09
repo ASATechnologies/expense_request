@@ -202,7 +202,29 @@ frappe.ui.form.on('Expense Entry Item', {
     // frappe.ui.form.on('Expense Entry', { expenses_add: function(frm, cdt, cdn) { ... } })
     expenses_add: function(frm, cdt, cdn) {
         set_default_dimensions_on_add(frm, cdt, cdn);
-    }
+    },
+
+	expense_account: function(frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+        if (row.expense_account) {
+            frappe.db.get_value('Account', row.expense_account, 'account_currency', (r) => {
+                frappe.model.set_value(cdt, cdn, 'currency', r.account_currency);
+				var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
+
+                // Fetch rate: Row Currency -> NGN
+                get_exchange_rate(r.account_currency, company_currency, (rate) => {
+                    frappe.model.set_value(cdt, cdn, 'exchange_rate', rate);
+                });
+            });
+        }
+    },
+	amount_in_account_currency: function(frm, cdt, cdn) {
+        calculate_row_base_amount(cdt, cdn);
+    },
+
+    exchange_rate: function(frm, cdt, cdn) {
+        calculate_row_base_amount(cdt, cdn);
+	}
 });
 
 frappe.ui.form.on('Expense Entry', {
@@ -210,6 +232,33 @@ frappe.ui.form.on('Expense Entry', {
         if (!validate_mandatory_dimensions(frm)) {
             frappe.validated = false;
             return false;
+        }
+    },
+	mode_of_payment: function(frm) {
+        if (frm.doc.mode_of_payment) {
+            frappe.call({
+                method: "erpnext.accounts.doctype.journal_entry.journal_entry.get_default_bank_cash_account",
+                args: {
+                    "mode_of_payment": frm.doc.mode_of_payment,
+                    "company": frm.doc.company
+                },
+                callback: function(r) {
+                    if (r.message) {
+						let pay_currency = r.message.account_currency;
+						// $.each(frm.doc.expenses || [], function(i, row) {
+                        //     if (!row.currency || row.currency !== pay_currency) {
+                        //         frappe.model.set_value(row.doctype, row.name, 'currency', pay_currency);
+                        //         // Trigger currency fetch for the row
+                        //     }
+                        // });
+						var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
+
+                        if (pay_currency !== company_currency) {
+                            frappe.msgprint(__("Payment account is in <b>{0}</b>. Multi-currency fields enabled.", [pay_currency]));
+                        }
+                    }
+                }
+            });
         }
     },
 
@@ -246,11 +295,26 @@ function set_queries(frm) {
         return {
             filters: [
                 ["Account", "root_type", "=", "Expense"],
-                ["Account", "is_group", "=", "0"],
+                ["Account", "is_group", "=", 0],
                 ["Account", "company", "=", frm.doc.company]
             ]
         };
     });
 
     // dimension queries are set in setup_dimension_queries() after load
+}
+function get_exchange_rate(from_curr, to_curr, callback) {
+    if (from_curr === to_curr) return callback(1.0);
+    frappe.call({
+        method: "erpnext.setup.utils.get_exchange_rate",
+        args: { from_currency: from_curr, to_currency: to_curr },
+        callback: (r) => callback(r.message)
+    });
+}
+
+function calculate_row_base_amount(cdt, cdn) {
+    let row = locals[cdt][cdn];
+    // Base Amount (amount) is always Foreign Amount * Rate
+    let base_val = flt(flt(row.amount_in_account_currency) * flt(row.exchange_rate || 1), precision('amount', row));;
+    frappe.model.set_value(cdt, cdn, 'amount', base_val);
 }

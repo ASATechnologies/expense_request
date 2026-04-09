@@ -201,12 +201,17 @@
   }
  ],
  "is_submittable": 1,
- "links": [],
- "modified": "2022-10-19 10:41:58.393012",
+ "links": [
+  {
+   "link_doctype": "Journal Entry",
+   "link_fieldname": "bill_no"
+  }
+ ],
+ "modified": "2026-04-09 03:15:34.411380",
  "modified_by": "Administrator",
  "module": "Expense Request",
  "name": "Expense Entry",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -258,6 +263,8 @@
   }
  ],
  "quick_entry": 1,
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
