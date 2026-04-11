@@ -94,6 +94,8 @@ def make_journal_entry(expense_entry, company_currency):
 	# Preparing the JE: convert expense_entry details into je account details
 	accounts = []
 
+	use_multi_currency = False
+
 	for detail in expense_entry.expenses:
 		if detail.currency != company_currency:
 			use_multi_currency = True
