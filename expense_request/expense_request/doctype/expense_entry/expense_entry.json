@@ -10,36 +10,35 @@
  "engine": "InnoDB",
  "field_order": [
   "company",
-  "column_break_1",
+  "requested_by",
+  "column_break_pioa",
   "posting_date",
   "set_posting_time",
   "required_by",
+  "section_break_fcgm",
+  "mode_of_payment",
+  "column_break_kfxc",
   "payment_to",
+  "payment_reference",
+  "clearance_date",
   "accounting_dimensions_section",
   "default_project",
   "accounting_col",
   "default_cost_center",
   "expense_details_section",
   "expenses",
-  "section_break_8",
-  "quantity",
-  "column_break_20",
+  "section_break_jeyg",
+  "column_break_twlf",
+  "column_break_zard",
   "total",
   "additional_information_section",
   "remarks",
   "approved_by",
   "column_break_8",
-  "mode_of_payment",
-  "payment_reference",
-  "clearance_date",
   "status",
   "amended_from"
  ],
  "fields": [
-  {
-   "fieldname": "column_break_1",
-   "fieldtype": "Column Break"
-  },
   {
    "default": "Today",
    "fieldname": "posting_date",
@@ -72,19 +71,12 @@
    "fieldname": "remarks",
    "fieldtype": "Small Text",
    "in_preview": 1,
-   "label": "Remarks"
+   "label": "Purpose / Justification",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_8",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "total",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Total",
-   "precision": "2",
-   "read_only": 1
   },
   {
    "allow_in_quick_entry": 1,
@@ -116,21 +108,12 @@
    "reqd": 1
   },
   {
-   "allow_in_quick_entry": 1,
-   "fieldname": "expenses",
-   "fieldtype": "Table",
-   "label": "Expense Details",
-   "options": "Expense Entry Item",
-   "reqd": 1
-  },
-  {
    "depends_on": "eval:doc.mode_of_payment != \"Cash\"",
    "fieldname": "payment_reference",
    "fieldtype": "Data",
    "label": "Payment Reference"
   },
   {
-   "depends_on": "eval:doc.mode_of_payment != \"Cash\"",
    "fieldname": "clearance_date",
    "fieldtype": "Date",
    "label": "Reference / Clearance Date"
@@ -149,20 +132,11 @@
    "label": "Approved By"
   },
   {
+   "description": "Full name of individual being paid",
    "fieldname": "payment_to",
    "fieldtype": "Data",
-   "label": "Payment To",
+   "label": "Payee Name",
    "reqd": 1
-  },
-  {
-   "fieldname": "section_break_8",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "quantity",
-   "fieldtype": "Read Only",
-   "label": "Quantity",
-   "print_hide": 1
   },
   {
    "fieldname": "accounting_dimensions_section",
@@ -190,14 +164,56 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "column_break_20",
-   "fieldtype": "Column Break"
-  },
-  {
    "default": "0",
    "fieldname": "set_posting_time",
    "fieldtype": "Check",
    "label": "Edit Posting Date"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "expenses",
+   "fieldtype": "Table",
+   "label": "Expense Account Details",
+   "options": "Expense Entry Account Detail",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_fcgm",
+   "fieldtype": "Section Break",
+   "label": "Payment Details"
+  },
+  {
+   "fieldname": "column_break_kfxc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "__user",
+   "fieldname": "requested_by",
+   "fieldtype": "Link",
+   "label": "Requested By",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_jeyg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_twlf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_zard",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "label": "Total Amount"
+  },
+  {
+   "fieldname": "column_break_pioa",
+   "fieldtype": "Column Break"
   }
  ],
  "is_submittable": 1,
@@ -207,7 +223,7 @@
    "link_fieldname": "bill_no"
   }
  ],
- "modified": "2026-04-09 03:15:34.411380",
+ "modified": "2026-06-11 09:46:29.315219",
  "modified_by": "Administrator",
  "module": "Expense Request",
  "name": "Expense Entry",

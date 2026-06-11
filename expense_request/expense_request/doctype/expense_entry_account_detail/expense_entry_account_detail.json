@@ -7,11 +7,11 @@
  "field_order": [
   "expense_details_section",
   "expense_account",
-  "exchange_rate",
-  "column_break_4",
   "amount_in_account_currency",
   "amount",
+  "column_break_4",
   "currency",
+  "exchange_rate",
   "description",
   "accounting_dimensions_section",
   "project",
@@ -80,10 +80,11 @@
   {
    "fieldname": "exchange_rate",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Exchange Rate",
    "precision": "9",
    "print_hide": 1,
-   "read_only": 1
+   "reqd": 1
   },
   {
    "fieldname": "amount_in_account_currency",
@@ -104,10 +105,10 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-09 01:45:38.513726",
+ "modified": "2026-06-11 09:31:46.116081",
  "modified_by": "Administrator",
  "module": "Expense Request",
- "name": "Expense Entry Item",
+ "name": "Expense Entry Account Detail",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,

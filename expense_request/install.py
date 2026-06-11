@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2025, Bantoo and contributors
 # For license information, please see license.txt
 
-from __future__ import unicode_literals
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_field
 
@@ -54,7 +52,7 @@ def sync_accounting_dimensions():
                     "in_list_view": 0,
                     "in_standard_filter": 1,
                     "reqd": 0,
-                    "description": f"Applies to all expenses below unless specified differently",
+                    "description": "Applies to all expenses below unless specified differently",
                 },
             )
             print(f"Created default field for {label}")
@@ -63,12 +61,12 @@ def sync_accounting_dimensions():
         if fieldname in existing_item_fields:
             continue
 
-        # Add dimension field to child table Expense Entry Item
+        # Add dimension field to child table Expense Entry Account Detail
         if not frappe.db.exists(
-            "Custom Field", {"dt": "Expense Entry Item", "fieldname": fieldname}
+            "Custom Field", {"dt": "Expense Entry Account Detail", "fieldname": fieldname}
         ):
             create_custom_field(
-                "Expense Entry Item",
+                "Expense Entry Account Detail",
                 {
                     "fieldname": fieldname,
                     "label": label,

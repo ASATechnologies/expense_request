@@ -1,139 +1,139 @@
 [
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "No",
-  "javascript": null,
-  "json": "{\"filters\":[],\"fields\":[[\"payment_to\",\"Expense Entry\"],[\"posting_date\",\"Expense Entry\"],[\"name\",\"Expense Entry\"],[\"description\",\"Expense Entry Item\"],[\"company\",\"Expense Entry\"],[\"amount\",\"Expense Entry Item\"],[\"status\",\"Expense Entry\"],[\"approved_by\",\"Expense Entry\"],[\"expense_account\",\"Expense Entry Item\"],[\"mode_of_payment\",\"Expense Entry\"],[\"cost_center\",\"Expense Entry Item\"],[\"project\",\"Expense Entry Item\"]],\"order_by\":\"`tabExpense Entry`.`modified` desc\",\"add_totals_row\":true,\"page_length\":20,\"column_widths\":{\"payment_to\":120,\"posting_date\":120,\"name\":108,\"Expense Entry Item:description\":120,\"Expense Entry Item:amount\":120,\"status\":120,\"approved_by\":120,\"Expense Entry Item:expense_account\":120,\"mode_of_payment\":97,\"Expense Entry Item:cost_center\":120,\"Expense Entry Item:project\":120},\"group_by\":null}",
-  "letter_head": null,
-  "modified": "2020-10-25 22:58:17.459778",
-  "module": "Expense Request",
-  "name": "Expenses Register",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Expense Entry",
-  "reference_report": null,
-  "report_name": "Expenses Register",
-  "report_script": null,
-  "report_type": "Report Builder",
-  "roles": [
-   {
-    "role": "Expense Approver"
-   },
-   {
-    "role": "Accounts User"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 0,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "Yes",
-  "javascript": null,
-  "json": null,
-  "letter_head": null,
-  "modified": "2017-02-24 20:19:19.231541",
-  "module": "Accounts",
-  "name": "Bank Reconciliation Statement",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Journal Entry",
-  "reference_report": null,
-  "report_name": "Bank Reconciliation Statement",
-  "report_script": null,
-  "report_type": "Script Report",
-  "roles": [
-   {
-    "role": "Accounts User"
-   },
-   {
-    "role": "Accounts Manager"
-   },
-   {
-    "role": "Auditor"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 0,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "Yes",
-  "javascript": null,
-  "json": null,
-  "letter_head": null,
-  "modified": "2017-02-24 20:19:26.257552",
-  "module": "Accounts",
-  "name": "Bank Clearance Summary",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Journal Entry",
-  "reference_report": null,
-  "report_name": "Bank Clearance Summary",
-  "report_script": null,
-  "report_type": "Script Report",
-  "roles": [
-   {
-    "role": "Accounts User"
-   },
-   {
-    "role": "Accounts Manager"
-   },
-   {
-    "role": "Auditor"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "Yes",
-  "javascript": null,
-  "json": null,
-  "letter_head": null,
-  "modified": "2017-02-24 20:16:43.005325",
-  "module": "Accounts",
-  "name": "Payment Period Based On Invoice Date",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Journal Entry",
-  "reference_report": null,
-  "report_name": "Payment Period Based On Invoice Date",
-  "report_script": null,
-  "report_type": "Script Report",
-  "roles": [
-   {
-    "role": "Accounts User"
-   },
-   {
-    "role": "Accounts Manager"
-   },
-   {
-    "role": "Auditor"
-   }
-  ],
-  "timeout": 0
- }
+    {
+        "add_total_row": 1,
+        "add_translate_data": 0,
+        "columns": [],
+        "disabled": 0,
+        "docstatus": 0,
+        "doctype": "Report",
+        "filters": [],
+        "is_standard": "No",
+        "javascript": null,
+        "json": "{\"filters\":[],\"fields\":[[\"payment_to\",\"Expense Entry\"],[\"posting_date\",\"Expense Entry\"],[\"name\",\"Expense Entry\"],[\"description\",\"Expense Entry Account Detail\"],[\"company\",\"Expense Entry\"],[\"amount\",\"Expense Entry Account Detail\"],[\"status\",\"Expense Entry\"],[\"approved_by\",\"Expense Entry\"],[\"expense_account\",\"Expense Entry Account Detail\"],[\"mode_of_payment\",\"Expense Entry\"],[\"cost_center\",\"Expense Entry Account Detail\"],[\"project\",\"Expense Entry Account Detail\"]],\"order_by\":\"`tabExpense Entry`.`modified` desc\",\"add_totals_row\":true,\"page_length\":20,\"column_widths\":{\"payment_to\":120,\"posting_date\":120,\"name\":108,\"Expense Entry Account Detail:description\":120,\"Expense Entry Account Detail:amount\":120,\"status\":120,\"approved_by\":120,\"Expense Entry Account Detail:expense_account\":120,\"mode_of_payment\":97,\"Expense Entry Account Detail:cost_center\":120,\"Expense Entry Account Detail:project\":120},\"group_by\":null}",
+        "letter_head": null,
+        "modified": "2020-10-25 22:58:17.459778",
+        "module": "Expense Request",
+        "name": "Expenses Register",
+        "prepared_report": 0,
+        "query": null,
+        "ref_doctype": "Expense Entry",
+        "reference_report": null,
+        "report_name": "Expenses Register",
+        "report_script": null,
+        "report_type": "Report Builder",
+        "roles": [
+            {
+                "role": "Expense Approver"
+            },
+            {
+                "role": "Accounts User"
+            }
+        ],
+        "timeout": 0
+    },
+    {
+        "add_total_row": 0,
+        "add_translate_data": 0,
+        "columns": [],
+        "disabled": 0,
+        "docstatus": 0,
+        "doctype": "Report",
+        "filters": [],
+        "is_standard": "Yes",
+        "javascript": null,
+        "json": null,
+        "letter_head": null,
+        "modified": "2017-02-24 20:19:19.231541",
+        "module": "Accounts",
+        "name": "Bank Reconciliation Statement",
+        "prepared_report": 0,
+        "query": null,
+        "ref_doctype": "Journal Entry",
+        "reference_report": null,
+        "report_name": "Bank Reconciliation Statement",
+        "report_script": null,
+        "report_type": "Script Report",
+        "roles": [
+            {
+                "role": "Accounts User"
+            },
+            {
+                "role": "Accounts Manager"
+            },
+            {
+                "role": "Auditor"
+            }
+        ],
+        "timeout": 0
+    },
+    {
+        "add_total_row": 0,
+        "add_translate_data": 0,
+        "columns": [],
+        "disabled": 0,
+        "docstatus": 0,
+        "doctype": "Report",
+        "filters": [],
+        "is_standard": "Yes",
+        "javascript": null,
+        "json": null,
+        "letter_head": null,
+        "modified": "2017-02-24 20:19:26.257552",
+        "module": "Accounts",
+        "name": "Bank Clearance Summary",
+        "prepared_report": 0,
+        "query": null,
+        "ref_doctype": "Journal Entry",
+        "reference_report": null,
+        "report_name": "Bank Clearance Summary",
+        "report_script": null,
+        "report_type": "Script Report",
+        "roles": [
+            {
+                "role": "Accounts User"
+            },
+            {
+                "role": "Accounts Manager"
+            },
+            {
+                "role": "Auditor"
+            }
+        ],
+        "timeout": 0
+    },
+    {
+        "add_total_row": 1,
+        "add_translate_data": 0,
+        "columns": [],
+        "disabled": 0,
+        "docstatus": 0,
+        "doctype": "Report",
+        "filters": [],
+        "is_standard": "Yes",
+        "javascript": null,
+        "json": null,
+        "letter_head": null,
+        "modified": "2017-02-24 20:16:43.005325",
+        "module": "Accounts",
+        "name": "Payment Period Based On Invoice Date",
+        "prepared_report": 0,
+        "query": null,
+        "ref_doctype": "Journal Entry",
+        "reference_report": null,
+        "report_name": "Payment Period Based On Invoice Date",
+        "report_script": null,
+        "report_type": "Script Report",
+        "roles": [
+            {
+                "role": "Accounts User"
+            },
+            {
+                "role": "Accounts Manager"
+            },
+            {
+                "role": "Auditor"
+            }
+        ],
+        "timeout": 0
+    }
 ]

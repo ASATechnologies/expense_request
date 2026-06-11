@@ -10,19 +10,16 @@ let accounting_dimensions = [];
 // ---- totals ----
 function update_totals(frm) {
     let total = 0;
-    let quantity = 0;
+
 
     if (Array.isArray(frm.doc.expenses)) {
         frm.doc.expenses.forEach(function(row) {
-            total += Number(row.amount || 0);
-            quantity += 1;
+            total += flt(row.amount || 0);
         });
     }
 
     frm.set_value("total", total);
-    frm.set_value("quantity", quantity);
     frm.refresh_field("total");
-    frm.refresh_field("quantity");
 }
 
 // ---- load dimensions from server (robust) ----
@@ -189,7 +186,7 @@ function clear_default_dimensions(frm) {
 }
 
 // ---- event handlers ----
-frappe.ui.form.on('Expense Entry Item', {
+frappe.ui.form.on('Expense Entry Account Detail', {
     amount: function(frm, cdt, cdn) {
         update_totals(frm);
     },
@@ -245,12 +242,6 @@ frappe.ui.form.on('Expense Entry', {
                 callback: function(r) {
                     if (r.message) {
 						let pay_currency = r.message.account_currency;
-						// $.each(frm.doc.expenses || [], function(i, row) {
-                        //     if (!row.currency || row.currency !== pay_currency) {
-                        //         frappe.model.set_value(row.doctype, row.name, 'currency', pay_currency);
-                        //         // Trigger currency fetch for the row
-                        //     }
-                        // });
 						var company_currency = frappe.get_doc(":Company", frm.doc.company).default_currency;
 
                         if (pay_currency !== company_currency) {

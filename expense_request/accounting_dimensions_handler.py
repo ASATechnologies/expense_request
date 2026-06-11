@@ -2,8 +2,8 @@
 # Updated to work with your existing DocType structure
 
 import frappe
-from frappe.custom.doctype.custom_field.custom_field import create_custom_field
 from frappe import _
+from frappe.custom.doctype.custom_field.custom_field import create_custom_field
 
 
 def on_dimension_change(doc, method):
@@ -47,24 +47,24 @@ def create_dimension_fields(dimension_doc):
                     "in_list_view": 0,
                     "in_standard_filter": 1,
                     "reqd": 0,
-                    "description": f"Applies to all expenses below unless specified differently",
+                    "description": "Applies to all expenses below unless specified differently",
                 },
             )
             print(f"Created default field for {label}")
 
         # Add dimension field to child table (only if not already in DocType)
         if fieldname not in existing_item_fields and not frappe.db.exists(
-            "Custom Field", {"dt": "Expense Entry Item", "fieldname": fieldname}
+            "Custom Field", {"dt": "Expense Entry Account Detail", "fieldname": fieldname}
         ):
 
             create_custom_field(
-                "Expense Entry Item",
+                "Expense Entry Account Detail",
                 {
                     "fieldname": fieldname,
                     "label": label,
                     "fieldtype": "Link",
                     "options": document_type,
-                    "insert_after": get_insert_after_field("Expense Entry Item"),
+                    "insert_after": get_insert_after_field("Expense Entry Account Detail"),
                     "in_list_view": 1,
                     "reqd": 1 if dimension_doc.mandatory_for_pl else 0,
                     "columns": 2,
@@ -79,7 +79,7 @@ def create_dimension_fields(dimension_doc):
         )
 
     except Exception as e:
-        frappe.log_error(f"Error creating dimension fields for {label}: {str(e)}")
+        frappe.log_error(f"Error creating dimension fields for {label}: {e!s}")
         frappe.throw(
             _("Error creating fields for accounting dimension {0}").format(label)
         )
@@ -108,10 +108,10 @@ def delete_dimension_fields(dimension_doc):
             if parent_field:
                 frappe.delete_doc("Custom Field", parent_field)
 
-        # Delete from Expense Entry Item (only if it's a custom field)
+        # Delete from Expense Entry Account Detail (only if it's a custom field)
         if fieldname not in protected_fields:
             child_field = frappe.db.exists(
-                "Custom Field", {"dt": "Expense Entry Item", "fieldname": fieldname}
+                "Custom Field", {"dt": "Expense Entry Account Detail", "fieldname": fieldname}
             )
             if child_field:
                 frappe.delete_doc("Custom Field", child_field)
@@ -126,7 +126,7 @@ def delete_dimension_fields(dimension_doc):
 
     except Exception as e:
         frappe.log_error(
-            f"Error deleting dimension fields for {dimension_doc.label}: {str(e)}"
+            f"Error deleting dimension fields for {dimension_doc.label}: {e!s}"
         )
 
 
@@ -140,7 +140,7 @@ def get_insert_after_field(doctype):
             if frappe.db.exists("DocField", {"parent": doctype, "fieldname": field}):
                 return field
 
-    elif doctype == "Expense Entry Item":
+    elif doctype == "Expense Entry Account Detail":
         # Try to insert after existing dimension fields
         preferred_fields = ["cost_center", "project", "amount"]
         for field in preferred_fields:
